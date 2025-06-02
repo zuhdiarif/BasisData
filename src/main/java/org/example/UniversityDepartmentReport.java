@@ -28,7 +28,6 @@ public class UniversityDepartmentReport{
         try (Connection connection = getConnection()) {
             System.out.println("Berhasil terhubung ke database University.");
 
-            // 1. Memuat stream dari file .jrxml
             InputStream reportStream = getClass().getResourceAsStream(jrxmlTemplatePath);
             if (reportStream == null) {
                 System.err.println("Template laporan tidak ditemukan di: " + jrxmlTemplatePath);
@@ -42,15 +41,12 @@ public class UniversityDepartmentReport{
 
             Map<String, Object> parameters = new HashMap<>();
             System.out.println("Mengisi laporan dengan data...");
-            // 4. Mengisi laporan dengan data dari koneksi database
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, connection);
             System.out.println("Laporan berhasil diisi dengan data.");
 
-            // 5. Mengekspor laporan ke format PDF
             JasperExportManager.exportReportToPdfFile(jasperPrint, outputPdfFile);
             System.out.println("Laporan berhasil diekspor ke: " + outputPdfFile);
 
-            // 6. Menampilkan laporan di JasperViewer (opsional)
             JasperViewer.viewReport(jasperPrint, false);
             System.out.println("Menampilkan laporan di JasperViewer...");
 
